@@ -11,7 +11,6 @@
       padding: 0;
       background: black;
       width: 100vw;
-      height: 100vh;
       overflow: hidden;
     }
     elevenlabs-convai {
@@ -28,5 +27,34 @@
 <body>
   <elevenlabs-convai agent-id="02iVSpCAgCDRxvixcuIi"></elevenlabs-convai>
   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
+
+  <script>
+    // Wait and attempt to force full-screen style on widget
+    const attemptResize = () => {
+      const widget = document.querySelector("elevenlabs-convai");
+      if (!widget) return;
+
+      const shadowRoot = widget.shadowRoot;
+      if (shadowRoot) {
+        const container = shadowRoot.querySelector("div");
+        if (container) {
+          container.style.width = "100vw";
+          container.style.height = "100vh";
+          container.style.position = "fixed";
+          container.style.top = "0";
+          container.style.left = "0";
+        }
+      }
+    };
+
+    // Retry every 500ms for up to 5 seconds
+    let retries = 0;
+    const interval = setInterval(() => {
+      attemptResize();
+      retries++;
+      if (retries > 10) clearInterval(interval);
+    }, 500);
+  </script>
 </body>
 </html>
+
